@@ -1,12 +1,12 @@
 /*
 
-Crerated by Romel Meza,
+Crerated by Romel Meza, Henrik Hynkemejer
 on 09/01/2024
 
 */
 
 // Libraries
-#include <ESP8266WiFi.h>
+#include <ESP8266WiFi.h> 
 #include <Servo.h>
 
 // Macros
