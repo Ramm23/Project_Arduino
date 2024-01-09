@@ -6,16 +6,20 @@ on 09/01/2024
 */
 
 // Libraries
-#include <ESP8266WiFi.h> 
+#include <ESP8266WiFi.h>
 #include <Servo.h>
 
 // Macros
-#define N 0;
-#include <SPI.h>
-#include <MFRC522.h>
-#define RST_PIN 9                 // Configurable, see typical pin layout above
-#define SS_PIN 10                 // Configurable, see typical pin layout above
-MFRC522 mfrc522(SS_PIN, RST_PIN); // Create MFRC522 instance
+#define RST D0 // Configurable pins as stated on the fritzing circuit
+#define MISO D6
+#define MOSI D7
+#define SDA D8
+#define SCK D5
+#define RED D3
+#define BLUE D2
+#define GREEN D3
+#define PHOTORESISTOR A0
+#define MOTOR D4
 
 // Global Variables
 
