@@ -1,6 +1,6 @@
 /*
 
-Created by Romel Meza, Henrik Hynkemejer, Frederik Trier, 
+Created by Romel Meza, Henrik Hynkemejer, Frederik Trier, Max Brazhnyy
 on 09/01/2024
 
 */
