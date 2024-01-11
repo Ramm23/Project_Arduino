@@ -1,6 +1,6 @@
 /*
 
-Crerated by Romel Meza, Henrik Hynkemejer
+Created by Romel Meza, Henrik Hynkemejer, Frederik Trier, 
 on 09/01/2024
 
 */
@@ -11,19 +11,30 @@ on 09/01/2024
 
 // Macros
 #define RST D0 // Configurable pins as stated on the fritzing circuit
+
+// RFID pins
+#define RST D3
+#define SS D4
+#define SCK D5
 #define MISO D6
 #define MOSI D7
-#define SDA D8
-#define SCK D5
-#define RED D3
-#define BLUE D2
-#define GREEN D3
+//Ground
+//3.3V 
+
+//RGB pins
+#define RED D0
+#define BLUE D1
+#define GREEN D2
+
+//Other pins
 #define PHOTORESISTOR A0
-#define MOTOR D4
+#define MOTOR SMD
+
+//Unused pins
+#define SDA D8
 
 // Global Variables
 
-const char Servo_motor = D1;
 
 void setup()
 {
