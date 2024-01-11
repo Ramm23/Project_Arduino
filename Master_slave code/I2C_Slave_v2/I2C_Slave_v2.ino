@@ -37,7 +37,8 @@ void receiveEvent() {
   // Receive and process the command from the master
   while (Wire.available()) {
     char command = Wire.read();
-    Serial.print(command);
+    Serial.print(command, DEC);
+    Serial.print("\n");
     // Perform an action based on the received command
     if (command == "A") {
       // Your action for command 'A'
