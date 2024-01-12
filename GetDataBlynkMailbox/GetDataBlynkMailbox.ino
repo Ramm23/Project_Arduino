@@ -39,7 +39,7 @@ BlynkTimer timer;  // Initializes timer for uptime log
 // Your WiFi credentials.
 // Set password to "" for open networks.
 char ssid[] = "ICE";
-char pass[] = "Bund1Ice";
+char pass[] = "Bund1Ice"; // Henrik's mobile hotspot. You are welcome to join :)
 
 
 // constants won't change. They're used here to set pin numbers:
@@ -65,12 +65,16 @@ void setup() {
   // Debug console
   Serial.begin(115200);
 
+  // Initialize connection to the BLYNK server
   Blynk.begin(BLYNK_AUTH_TOKEN, ssid, pass);
 
   // Setup a function to be called every second
   timer.setInterval(1000L, myTimerEvent);
 
+  // Delete when light sensor input is implemented
   pinMode(buttonPin, INPUT_PULLUP);
+
+  // Reset mail counter
   counter = 0;
   Blynk.virtualWrite(V0, counter);
 }
@@ -91,7 +95,7 @@ void loop() {
     // reset the debouncing timer
     lastDebounceTime = millis();
   }
-
+  // The debouncing is used for testing, might not be needed when light sensor is implemented. 
   if ((millis() - lastDebounceTime) > debounceDelay) {
     // whatever the reading is at, it's been there for longer than the debounce
     // delay, so take it as the actual current state:
