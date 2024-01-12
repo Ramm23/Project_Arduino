@@ -26,12 +26,8 @@ D8 - would be 15, but doesnt work for some reason??
 
 int i = 1;
 void setup() {
-  //Wire.begin();        // join i2c bus (address optional for master)
-  //Wire.begin(0, 2);  // Works if A4-D3 and A5-D4
-  //Wire.begin();  //works with A4-D2 and A5-D1
-  //Wire.begin(0, 4);      //works with A4-D3 and A5-D2
-  //Wire.begin(0, 5);      //works with A4-D3 and A5-D1
-  Wire.begin(0, 13);     //works with A4-D and A5-D
+
+  Wire.begin(D2, D1);    //works with D2-A4 and D1-A5
   Serial.begin(115200);  // start serial for output
   delay(100);
   Serial.print("\nMaster Ready");
@@ -45,7 +41,7 @@ void loop() {
 void communication() {
   i = i + 1;
   Wire.beginTransmission(8);  // Address of the slave
-  Wire.write(i);              // Send a command (character 'A' in this example)
+  Wire.write('A');            // Send a command (character 'A' in this example)
   Wire.endTransmission();
   Serial.print("\nTried sending ");
   Serial.print(i, DEC);
