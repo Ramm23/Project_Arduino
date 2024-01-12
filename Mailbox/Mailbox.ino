@@ -40,6 +40,8 @@ on 09/01/2024
 MFRC522 mfrc522(SS_PIN, RST_PIN);   // creates the MFRC522 instance
 
 // Global Variables
+float prevLight = 0.0;
+float currentLight = 0.0;
 
 
 void setup()
@@ -54,6 +56,8 @@ void setup()
 
 void loop()
 {
+  //check change in light levels
+  checkLight();
   // Look for new cards
   if ( ! mfrc522.PICC_IsNewCardPresent())      // If there is a new card, then you escape the return loop
   {
@@ -98,5 +102,22 @@ void loop()
     Serial.println(" Access denied");
     // Red light
     delay(3000);
+  }
+}
+
+void checkLight() {
+  float threshold = prevLight * 1.1;                      //proptional threshold for determinig if light change is gradual or sudden
+  currentLight = analogRead(A0);
+  float lightChange = abs(currentLight - prevLight);      //change in light level since last reading
+  if (lightChange > threshold) {                           //sudden change in light i.e. mailbox has been opened 
+    //tell the server -> need to send 1/HIGH/True on light sensor recognised mialbox being opened
+    delay(500);
+    prevLight = currentLight;                 //updating the light level
+    delay(500);
+    }
+  else {                            //gradual light change due to noise - no action required 
+    delay(500);
+    prevLight = currentLight;
+    delay(500);
   }
 }
