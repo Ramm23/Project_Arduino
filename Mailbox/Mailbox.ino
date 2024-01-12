@@ -82,17 +82,21 @@ void loop()
   if (content.substring(1) == "6C 40 CB 38") //change here the UID of the card/cards that you want to give access
   {
     Serial.println("Enter Password");
-    // call function sending command to slave
-    // if code is correct, open. And show green LED.
-    // Set button to high on the server.
-    // do server read, and if button == high, open the mailbox. (A bit unnecessary, but we need to do a server.read)
+    // Show yellow light on the RGB
+    // call function that initiates numpad on the slave Arduino. Check if the password is correct on the slave.
+    // If Master recieves recieves "Correct" then continue, otherwise show RED light.
+    // If the password is correct, send HIGH to server.
+    // Show green light on the RGB
+    // do server read, and if button == high, the mailbox opens. (A bit unnecessary, but we need to do a server.read)
     // Send name of person to server, and time of day from real time clock. 
     Serial.println();
     delay(3000);            // This delay was already in the code, when i got it. But i think it seems fine. 
   }
+  
  
  else   {
     Serial.println(" Access denied");
+    // Red light
     delay(3000);
   }
 }
