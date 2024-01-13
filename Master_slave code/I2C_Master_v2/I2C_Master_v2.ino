@@ -33,28 +33,25 @@ void setup() {
 }
 
 void loop() {
-  //communication_send_M();
-  communication_receive_M();
+  communication_send_M(); //sending data from master to slave
+  delay(500);
+  communication_receive_M();  //receiving data on master from slave
   delay(500);  // Add a delay before sending the next command
-  Serial.print("\n \n");
-
 }
 
 void communication_send_M() {
-  i = i + 1;
+
   Wire.beginTransmission(8);  // Address of the slave
-  Wire.write('A');            // Send a command (character 'A' in this example)
+  Wire.write("master-slave");            // Send a command (character 'A' in this example)
   Wire.endTransmission();
-  Serial.print("\nTried sending ");
-  Serial.print(i, DEC);
+
 }
 
 void communication_receive_M() {
-  Wire.requestFrom(8, 13);    // request 6 bytes from slave device #8
+  Wire.requestFrom(8, 13);    // request 13 bytes from slave device #8; change later 
 
   while (Wire.available()) { // slave may send less than requested
     char c = Wire.read(); // receive a byte as character
-    //Serial.print("\nTrying to print \n");
     Serial.print(c);         // print the character
   }
 

@@ -17,6 +17,7 @@
 || | Demonstrates changing the keypad size and key values.
 || #
 */
+
 #include <Keypad.h>
 
 const byte ROWS = 4;  //four rows
@@ -44,13 +45,8 @@ bool var = false;
 
 void setup() {
   Serial.begin(115200);
-
   Wire.begin(8);  // join i2c bus with address #8
-  Serial.print("Wire.onRequest(requestEvent);");
-  Serial.print("Wire.onReceive(receiveEvent);");
-  //Wire.onRequest(requestEvent);
-  //Wire.onReceive(receiveEvent);
-  Serial.print("\nSlave Ready");
+  Serial.print("\nSlave Ready\n");
 }
 
 void loop() {
@@ -62,26 +58,26 @@ void loop() {
     Serial.println(customKey);  // print the input
   }
   delay(100);
-  readKeypad();*/
+  
+  readKeypad();
+  */
   delay(100);
-  //communication_receive_s();
+  communication_receive_s(); // receiving data on slave from master
 
   delay(100);
-  communication_send_s();
+  communication_send_s(); // sending data from slave to master
 
 }
-
-// function that executes whenever data is requested by master
-// this function is registered as an event, see setup()
 
 
 void receiveEvent() {
   // Receive and process the command from the master
+  Serial.print("\n");
   while (Wire.available()) {
     char command = Wire.read();
     Serial.print(command);
-    Serial.print(command, DEC);
-    Serial.print("\n");
+    //Serial.print(command, DEC);
+    //Serial.print("\n");
     // Perform an action based on the received command
     if (command == 'A') {
       // Your action for command 'A'
@@ -128,3 +124,6 @@ void communication_send_s() {
   Wire.onRequest(requestEvent); // register event
 }
 
+void communication_receive_s(){
+  Wire.onReceive(receiveEvent);
+}
