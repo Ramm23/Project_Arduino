@@ -43,11 +43,16 @@ bool var = false;
 
 #include <Wire.h>
 
+char s_m[] = "s-m";   // Use an array of characters for the string
+char* messageToSend;  // Global variable to store the message
+
 void setup() {
   Serial.begin(115200);
-  Wire.begin(8);  // join i2c bus with address #8
+  Wire.begin(8);        // join i2c bus with address #
+  messageToSend = "s_m";  // Assign the message to the global variable
   Serial.print("\nSlave Ready\n");
 }
+
 
 void loop() {
   /*
@@ -62,11 +67,10 @@ void loop() {
   readKeypad();
   */
   delay(100);
-  communication_receive_s(); // receiving data on slave from master
+  communication_receive_s();  // receiving data on slave from master
 
   delay(100);
-  communication_send_s(); // sending data from slave to master
-
+  communication_send_s();  // sending data from slave to master
 }
 
 
@@ -76,15 +80,6 @@ void receiveEvent() {
   while (Wire.available()) {
     char command = Wire.read();
     Serial.print(command);
-    //Serial.print(command, DEC);
-    //Serial.print("\n");
-    // Perform an action based on the received command
-    if (command == 'A') {
-      // Your action for command 'A'
-      Serial.println("Received command 'A'. Performing action.");
-      // Add your code here to perform a specific action when 'A' is received
-    }
-    // Add more conditions for other commands if needed
   }
 }
 
@@ -116,14 +111,13 @@ void readKeypad() {
 }
 
 void requestEvent() {
-  Wire.write("\nslave-master"); // respond with message of 6 bytes
-  // as expected by master
+  Wire.write(messageToSend, sizeof(s_m));
 }
 
 void communication_send_s() {
-  Wire.onRequest(requestEvent); // register event
+  Wire.onRequest(requestEvent);
 }
 
-void communication_receive_s(){
+void communication_receive_s() {
   Wire.onReceive(receiveEvent);
 }

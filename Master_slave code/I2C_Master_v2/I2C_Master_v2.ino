@@ -24,35 +24,37 @@ D8 - would be 15, but doesnt work for some reason??
 
 #include <Wire.h>
 
-int i = 1;
+char m_s[] = "m-s";   // Use an array of characters for the string
+char* messageToSend;  // Global variable to store the message
+
 void setup() {
   Wire.begin(D2, D1);    //works with D2-A4 and D1-A5
+  messageToSend = "m_s";   // Assign the message to the global variable
   Serial.begin(115200);  // start serial for output
   delay(100);
   Serial.print("\nMaster Ready");
 }
 
+
 void loop() {
-  communication_send_M(); //sending data from master to slave
+  communication_send_M();  //sending data from master to slave
   delay(500);
   communication_receive_M();  //receiving data on master from slave
-  delay(500);  // Add a delay before sending the next command
+  delay(500);                 // Add a delay before sending the next command
 }
 
 void communication_send_M() {
 
   Wire.beginTransmission(8);  // Address of the slave
-  Wire.write("master-slave");            // Send a command (character 'A' in this example)
+  Wire.write(messageToSend);  // Send a command (character 'A' in this example)
   Wire.endTransmission();
-
 }
 
 void communication_receive_M() {
-  Wire.requestFrom(8, 13);    // request 13 bytes from slave device #8; change later 
-
-  while (Wire.available()) { // slave may send less than requested
-    char c = Wire.read(); // receive a byte as character
-    Serial.print(c);         // print the character
+  Wire.requestFrom(8, 4);  // request 4 bytes from slave device #8; change according to need
+  Serial.print("\n");
+  while (Wire.available()) {  // slave may send less than requested
+    char c = Wire.read();     // receive a byte as character
+    Serial.print(c);          // print the character
   }
-
 }
