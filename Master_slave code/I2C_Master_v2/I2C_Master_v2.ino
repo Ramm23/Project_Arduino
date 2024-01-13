@@ -41,7 +41,7 @@ void loop() {
 }
 
 void communication_send_M() {
-  /i = i + 1;
+  i = i + 1;
   Wire.beginTransmission(8);  // Address of the slave
   Wire.write('A');            // Send a command (character 'A' in this example)
   Wire.endTransmission();
