@@ -14,10 +14,10 @@
 
 void setup() {
   //Wire.begin();        // join i2c bus (address optional for master)
-  Wire.begin(0,2);
-  Serial.begin(9600);  // start serial for output
+  Wire.begin(D2, D1);    //works with D2-A4 and D1-A5
+  Serial.begin(115200);  // start serial for output
   delay(100);
-  Serial.print("Master Ready");
+  Serial.print("\nMaster Ready");
 }
 
 void loop() {

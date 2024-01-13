@@ -43,16 +43,18 @@ bool var = false;
 #include <Wire.h>
 
 void setup() {
+  Serial.begin(115200);
+
   Wire.begin(8);  // join i2c bus with address #8
   Serial.print("Wire.onRequest(requestEvent);");
   Serial.print("Wire.onReceive(receiveEvent);");
-  Wire.onRequest(requestEvent);
-  Wire.onReceive(receiveEvent);
-  Serial.begin(115200);
+  //Wire.onRequest(requestEvent);
+  //Wire.onReceive(receiveEvent);
   Serial.print("\nSlave Ready");
 }
 
 void loop() {
+  /*
   char customKey;                     // resets the keypad input
   customKey = customKeypad.getKey();  // Reads the Keypad input
 
@@ -60,15 +62,18 @@ void loop() {
     Serial.println(customKey);  // print the input
   }
   delay(100);
-  readKeypad();
+  readKeypad();*/
+  delay(100);
+  //communication_receive_s();
+
+  delay(100);
+  communication_send_s();
+
 }
 
 // function that executes whenever data is requested by master
 // this function is registered as an event, see setup()
-void requestEvent() {
-  //Wire.write("hello \n"); // respond with message of 6 bytes
-  // as expected by master
-}
+
 
 void receiveEvent() {
   // Receive and process the command from the master
@@ -113,3 +118,13 @@ void readKeypad() {
     }
   }
 }
+
+void requestEvent() {
+  Wire.write("\nslave-master"); // respond with message of 6 bytes
+  // as expected by master
+}
+
+void communication_send_s() {
+  Wire.onRequest(requestEvent); // register event
+}
+

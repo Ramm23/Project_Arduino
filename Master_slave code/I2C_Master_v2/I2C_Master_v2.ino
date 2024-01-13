@@ -26,7 +26,6 @@ D8 - would be 15, but doesnt work for some reason??
 
 int i = 1;
 void setup() {
-
   Wire.begin(D2, D1);    //works with D2-A4 and D1-A5
   Serial.begin(115200);  // start serial for output
   delay(100);
@@ -34,15 +33,29 @@ void setup() {
 }
 
 void loop() {
-  communication();
+  //communication_send_M();
+  communication_receive_M();
   delay(500);  // Add a delay before sending the next command
+  Serial.print("\n \n");
+
 }
 
-void communication() {
-  i = i + 1;
+void communication_send_M() {
+  /i = i + 1;
   Wire.beginTransmission(8);  // Address of the slave
   Wire.write('A');            // Send a command (character 'A' in this example)
   Wire.endTransmission();
   Serial.print("\nTried sending ");
   Serial.print(i, DEC);
+}
+
+void communication_receive_M() {
+  Wire.requestFrom(8, 13);    // request 6 bytes from slave device #8
+
+  while (Wire.available()) { // slave may send less than requested
+    char c = Wire.read(); // receive a byte as character
+    //Serial.print("\nTrying to print \n");
+    Serial.print(c);         // print the character
+  }
+
 }

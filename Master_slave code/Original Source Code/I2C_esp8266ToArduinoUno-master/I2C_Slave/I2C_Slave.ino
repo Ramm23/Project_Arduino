@@ -14,18 +14,21 @@
 
 void setup() {
   Wire.begin(8);                // join i2c bus with address #8
-  Wire.onRequest(requestEvent); // register event
-  Serial.print("Slave Ready");
+  Serial.begin(115200);
+  
+  Serial.print("\nSlave Ready");
 
 }
 
 void loop() {
   delay(100);
+  Wire.onRequest(requestEvent); // register event
+
 }
 
 // function that executes whenever data is requested by master
 // this function is registered as an event, see setup()
 void requestEvent() {
-  Wire.write("hello "); // respond with message of 6 bytes
+  Wire.write("\nhello "); // respond with message of 6 bytes
   // as expected by master
 }
