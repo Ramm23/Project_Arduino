@@ -43,13 +43,13 @@ bool var = false;
 
 #include <Wire.h>
 
-char s_m[] = "s-m";   // Use an array of characters for the string
+//char s_m[] = "s-m";   // Use an array of characters for the string
 char* messageToSend;  // Global variable to store the message
 
 void setup() {
   Serial.begin(115200);
   Wire.begin(8);        // join i2c bus with address #
-  messageToSend = "s_m";  // Assign the message to the global variable
+  messageToSend = "s";  // Assign the message to the global variable
   Serial.print("\nSlave Ready\n");
 }
 
@@ -111,7 +111,7 @@ void readKeypad() {
 }
 
 void requestEvent() {
-  Wire.write(messageToSend, sizeof(s_m));
+  Wire.write(messageToSend, sizeof(messageToSend+1));
 }
 
 void communication_send_s() {

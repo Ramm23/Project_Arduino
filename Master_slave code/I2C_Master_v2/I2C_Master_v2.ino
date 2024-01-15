@@ -24,7 +24,7 @@ D8 - would be 15, but doesnt work for some reason??
 
 #include <Wire.h>
 
-char m_s[] = "m-s";   // Use an array of characters for the string
+//char m_s[] = "m-s";   // Use an array of characters for the string
 char* messageToSend;  // Global variable to store the message
 
 void setup() {
@@ -38,9 +38,9 @@ void setup() {
 
 void loop() {
   communication_send_M();  //sending data from master to slave
-  delay(500);
+  delay(1000);
   communication_receive_M();  //receiving data on master from slave
-  delay(500);                 // Add a delay before sending the next command
+  delay(1000);                 // Add a delay before sending the next command
 }
 
 void communication_send_M() {
@@ -51,7 +51,7 @@ void communication_send_M() {
 }
 
 void communication_receive_M() {
-  Wire.requestFrom(8, 4);  // request 4 bytes from slave device #8; change according to need
+  Wire.requestFrom(8, 2);  // request 4 bytes from slave device #8; change according to need
   Serial.print("\n");
   while (Wire.available()) {  // slave may send less than requested
     char c = Wire.read();     // receive a byte as character
