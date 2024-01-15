@@ -23,22 +23,22 @@ byte colPins[COLS] = { 9, 8, 7, 6 };  //connect to the column pinouts of the key
 
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
-char* passcodeA;
-char* passcodeB;
-char* passcodeC;
-char* passcodeD;
-char* passcode;
+
 char key;
 int i = 0;
 String inputString;
 long inputInt;
+char* passcodeA = "1234";
+char* passcodeB = "2345";
+char* passcodeC = "3456";
+char* passcodeD = "4567";
 
 void setup() {
   Serial.begin(115200);
-  passcodeA = "1234";
-  passcodeA = "2345";
-  passcodeA = "3456";
-  passcodeA = "4567";
+
+  // passcodeA = "2345";
+  // passcodeA = "3456";
+  // passcodeA = "4567";
 }
 
 void loop() {
@@ -48,11 +48,13 @@ void loop() {
   check_code();
   // Serial.print("\nTotal Received Passcode: ");
   // Serial.print(full_passcode);
-  Serial.print("Performing Delay of 10 seconds");
+  Serial.print("\nPasscode received;");
+  check_passcode();
+  Serial.print("\n \nPerforming Delay of 10 seconds");
   delay(10 * 1000);
 }
 
-void run_keypad() {
+/*void run_keypad() {
   Serial.print("\nInput passcode on numpad");
 
   while (key == NO_KEY) {
@@ -70,15 +72,31 @@ void run_keypad() {
     }
   }
   Serial.print("\nTotal Received Passcode: ");
-  Serial.print(passcode);
 }
+*/
 
 
 void check_passcode() {
-  if (passcode == passcodeA) {
-    Serial.print("\npasscode == passcodeA");
+  Serial.print("\nChecking correctenss...");
+  if (inputString == passcodeA) {
+    Serial.print("\nCorrect!");
+  } 
+  else if (inputString == passcodeB) {
+    Serial.print("\nCorrect!");
+  } 
+  else if (inputString == passcodeC) {
+    Serial.print("\nCorrect!");
+  }   
+  else if (inputString == passcodeD) {
+    Serial.print("\nCorrect!");
+  }   
+  else {
+    Serial.print("\nPassword incorrect");
+    Serial.print("\nReceived password: ");
+    Serial.print(inputString);
   }
 }
+
 
 /*
 char register_key(){
@@ -118,6 +136,7 @@ char register_key(){
 
 
 void check_code() {  //code from https://arduinogetstarted.com/faq/how-to-input-a-multiple-digits-number-using-the-keypad?utm_content=cmp-true
+  Serial.print("\n \nInput your password, please:");
   inputString = "";  // Reset the inputString for the next input
   while (inputString.length() != 4) {
 
