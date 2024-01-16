@@ -29,7 +29,7 @@ char* messageToSend;  // Global variable to store the message
 
 void setup() {
   Wire.begin(D2, D1);    //works with D2-A4 and D1-A5
-  messageToSend = "m_s";   // Assign the message to the global variable
+  messageToSend = "1";   // Assign the message to the global variable
   Serial.begin(115200);  // start serial for output
   delay(100);
   Serial.print("\nMaster Ready");
@@ -39,19 +39,20 @@ void setup() {
 void loop() {
   communication_send_M();  //sending data from master to slave
   delay(1000);
+  //while()
   communication_receive_M();  //receiving data on master from slave
   delay(1000);                 // Add a delay before sending the next command
 }
 
 void communication_send_M() {
-
+  //Serial.print("Sending A");
   Wire.beginTransmission(8);  // Address of the slave
-  Wire.write(messageToSend);  // Send a command (character 'A' in this example)
+  Wire.write("A");  // Send a command (character 'A' in this example)
   Wire.endTransmission();
 }
 
 void communication_receive_M() {
-  Wire.requestFrom(8, 2);  // request 4 bytes from slave device #8; change according to need
+  Wire.requestFrom(8, 2);  // request 2 bytes from slave device #8; change according to need
   Serial.print("\n");
   while (Wire.available()) {  // slave may send less than requested
     char c = Wire.read();     // receive a byte as character

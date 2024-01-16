@@ -49,7 +49,7 @@ void loop() {
   // Serial.print("\nTotal Received Passcode: ");
   // Serial.print(full_passcode);
   Serial.print("\nPasscode received;");
-  check_passcode();
+  check_correctness();
   Serial.print("\n \nPerforming Delay of 10 seconds");
   delay(10 * 1000);
 }
@@ -76,7 +76,7 @@ void loop() {
 */
 
 
-void check_passcode() {
+void check_correctness() {
   Serial.print("\nChecking correctenss...");
   if (inputString == passcodeA) {
     Serial.print("\nCorrect!");
@@ -135,7 +135,7 @@ char register_key(){
 */
 
 
-void check_code() {  //code from https://arduinogetstarted.com/faq/how-to-input-a-multiple-digits-number-using-the-keypad?utm_content=cmp-true
+void check_code() {  //adapted code from https://arduinogetstarted.com/faq/how-to-input-a-multiple-digits-number-using-the-keypad?utm_content=cmp-true
   Serial.print("\n \nInput your password, please:");
   inputString = "";  // Reset the inputString for the next input
   while (inputString.length() != 4) {
