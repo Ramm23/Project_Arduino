@@ -54,12 +54,24 @@ char ssid[] = "ICE";
 char pass[] = "Bund1Ice";  // Henrik's mobile hotspot. You are welcome to join :)
 int counter;               // Counter to increase
 
+
 //RFID instance
 MFRC522 mfrc522(SS_PIN, RST_PIN);  // creates the MFRC522 instance
 
 // Global Variables
 float prevLight = 0.0;
 float currentLight = 0.0;
+
+// This function will be called every time Slider Widget
+// in Blynk app writes values to the Virtual Pin 1
+BLYNK_WRITE(V1) {
+  int pinValue = param.asInt();  // assigning incoming value from pin V1 to a variable
+  // You can also use:
+  // String i = param.asStr();
+  // double d = param.asDouble();
+  Serial.print("V1 Slider value is: ");
+  Serial.println(pinValue);
+}
 
 
 void setup() {
