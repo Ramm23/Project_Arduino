@@ -25,7 +25,7 @@ String passcodeA = "1234";
 String passcodeB = "2345";
 String passcodeC = "3456";
 String passcodeD = "4567";
-char* messageToSend = '0';  // Assuming it's a single character
+char* messageToSend;  // Assuming it's a single character
 
 char message_received = '0';  //1 if a message has been received; 0 if a message has not been received
 char command  = '0';
@@ -40,12 +40,15 @@ void setup() {
   Serial.begin(115200);
   Wire.begin(8);        // join i2c bus with address #
   //messageToSend = "s";  // Assign the message to the global variable
+  pinMode(LED_BUILTIN, OUTPUT);
   Serial.print("\nSlave Ready\n");
+  
 }
 
 void loop() {
+  Serial.print("\nbeginning of loop ");
   while (message_received == '0') {
-    Serial.print("inside while");
+    
     delay(100);
     communication_receive_s();  // receiving data on slave from master
   }
@@ -54,7 +57,12 @@ void loop() {
   check_correctness();
 
   delay(100);
+  
   communication_send_s();  // sending data from slave to master
+  Serial.print("\nnot Delay for 10 seconds ");
+  //delay(10000);
+  //messageToSend = "3";
+  message_received = '0';
 }
 
 
@@ -65,7 +73,7 @@ void receiveEvent() {
     command = Wire.read();
     //Serial.print(command);
     if (command == 'A' || command == 'B' || command == 'C' || command == 'D') {
-      message_received = "1";
+      message_received = '1';
     } else message_received = "0";
   }
   Serial.print("command =");
@@ -73,7 +81,10 @@ void receiveEvent() {
 }
 
 void requestEvent() {
+  Serial.print("Sending");
+  Serial.print(messageToSend);
   Wire.write(messageToSend, sizeof(messageToSend + 1));
+  messageToSend = "3";
 }
 
 void communication_send_s() {
@@ -121,6 +132,8 @@ void check_correctness() {
   if (command == 'A' && inputString.equals(passcodeA)) {
     Serial.print("\nCorrect!");
     messageToSend = '1';
+    Serial.print("\nif A inside check correctness; messageToSend = ");
+    Serial.print(messageToSend);
   } 
   else if (command == 'B' && inputString.equals(passcodeB)) {
     Serial.print("\nCorrect!");
@@ -138,6 +151,6 @@ void check_correctness() {
     Serial.print("\nPassword incorrect");
     Serial.print("\nReceived password: ");
     Serial.print(inputString);
-    messageToSend = '0';
+    messageToSend = "0";
   }
 }

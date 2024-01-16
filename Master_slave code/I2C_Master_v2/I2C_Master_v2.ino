@@ -26,7 +26,7 @@ D8 - would be 15, but doesnt work for some reason??
 
 //char m_s[] = "m-s";   // Use an array of characters for the string
 char* messageToSend;  // Global variable to store the message
-
+char* c;
 void setup() {
   Wire.begin(D2, D1);    //works with D2-A4 and D1-A5
   messageToSend = "1";   // Assign the message to the global variable
@@ -55,7 +55,7 @@ void communication_receive_M() {
   Wire.requestFrom(8, 2);  // request 2 bytes from slave device #8; change according to need
   Serial.print("\n");
   while (Wire.available()) {  // slave may send less than requested
-    char c = Wire.read();     // receive a byte as character
+    c = Wire.read();     // receive a byte as character
     Serial.print(c);          // print the character
   }
 }
