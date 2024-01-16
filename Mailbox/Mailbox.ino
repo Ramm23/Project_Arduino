@@ -18,6 +18,7 @@ on 09/01/2024
 #include <SPI.h>
 #include <MFRC522.h>
 #include <BlynkSimpleEsp8266.h>
+#include <Wire.h>
 
 
 // Macros
@@ -62,6 +63,9 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);  // creates the MFRC522 instance
 float prevLight = 0.0;
 float currentLight = 0.0;
 
+//Master-slave variables
+char* messageToSend;  // Global variable to store the message
+
 // This function will be called every time Slider Widget
 // in Blynk web writes values to the Virtual Pin 1
 BLYNK_WRITE(V1) {
@@ -88,6 +92,9 @@ BLYNK_WRITE(V2) {
 
 void setup() {
   Serial.begin(115200);
+  Wire.begin(D2, D1);    //works with D2-A4 and D1-A5
+  messageToSend = "1";   // Assign the message to the global variable
+  Serial.print("\nMaster Ready");
   //RFID
   SPI.begin();         // Initiate  SPI bus
   mfrc522.PCD_Init();  // Initiate MFRC522
@@ -103,8 +110,8 @@ void setup() {
   Blynk.virtualWrite(V0, counter);
 
   //motor 
-  servo.attach(D8, 544, 2400);                //using the servo library to set the pin and the max and min value of roation set through miliseconds linked to the pwm.
-  servo.write(0);                             // these values are calibrated for the servo motor being placed on the internal ledge with the brown wire facing down.
+  //Servo.attach(D8, 544, 2400);                //using the servo library to set the pin and the max and min value of roation set through miliseconds linked to the pwm.
+  //Servo.write(0);                             // these values are calibrated for the servo motor being placed on the internal ledge with the brown wire facing down.
   
 
   //
@@ -142,7 +149,9 @@ void loop() {
   Serial.print(content.substring(1));
   if (content.substring(1) == "6C 40 CB 38")  //change here the UID of the card/cards that you want to give access
   {
-    Serial.println("Enter Password");
+    Serial.println("Passing over to slave");
+    messageToSend = "A";   // Assign the message to the global variable
+    communication_send_M();  //sending data from master to slave
     // Show yellow light on the RGB
     // call function that initiates numpad on the slave Arduino. Check if the password is correct on the slave.
     // If Master recieves recieves "Correct" then continue, otherwise show RED light.
@@ -184,11 +193,27 @@ void checkLight() {
     delay(500);
   }
 }
-
+/*
 void lockDoor() {
   servo.write(0);               //when the motor rod is angled at 0 degrees, the bottle cap(lock meachnism for prototype), will prevent the door from being opened
 }
 
 void unlockDoor() {
   servo.write(180);         //motor rod angled at 180 degrees and lock mechanism and therefor door is free to move
+}
+*/
+void communication_send_M() {
+  //Serial.print("Sending A");
+  Wire.beginTransmission(8);  // Address of the slave
+  Wire.write("A");  // Send a command (character 'A' in this example)
+  Wire.endTransmission();
+}
+
+void communication_receive_M() {
+  Wire.requestFrom(8, 2);  // request 2 bytes from slave device #8; change according to need
+  Serial.print("\n");
+  while (Wire.available()) {  // slave may send less than requested
+    char c = Wire.read();     // receive a byte as character
+    Serial.print(c);          // print the character
+  }
 }

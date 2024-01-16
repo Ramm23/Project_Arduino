@@ -47,7 +47,7 @@ void loop() {
 void communication_send_M() {
   //Serial.print("Sending A");
   Wire.beginTransmission(8);  // Address of the slave
-  Wire.write("A");  // Send a command (character 'A' in this example)
+  Wire.write(messageToSend);  // Send a command (character 'A' in this example)
   Wire.endTransmission();
 }
 
