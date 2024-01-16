@@ -68,16 +68,6 @@ float currentLight = 0.0;
 //Master-slave variables
 char* messageToSend;  // Global variable to store the message
 
-// This function will be called every time Slider Widget
-// in Blynk app writes values to the Virtual Pin 1
-BLYNK_WRITE(V1) {
-  int pinValue = param.asInt();  // assigning incoming value from pin V1 to a variable
-  // You can also use:
-  // String i = param.asStr();
-  // double d = param.asDouble();
-  Serial.print("V1 Slider value is: ");
-  Serial.println(pinValue);
-}
 
 
 void setup() {
@@ -103,6 +93,27 @@ void setup() {
   //servo.attach(D8, 544, 2400);                //using the servo library to set the pin and the max and min value of roation set through miliseconds linked to the pwm.
   //servo.write(0);                             // these values are calibrated for the servo motor being placed on the internal ledge with the brown wire facing down.
   
+  // This function will be called every time Slider Widget
+// in Blynk web writes values to the Virtual Pin 1
+BLYNK_WRITE(V1) {
+  int pinValue = param.asInt();  // assigning incoming value from pin V1 to a variable
+  // You can also use:
+  // String i = param.asStr();
+  // double d = param.asDouble();
+  Serial.print("V1 Slider value is: ");
+  Serial.println(pinValue);
+}
+
+// This function will be called every time Button Widget
+// in Blynk app writes values to the Virtual Pin 2
+BLYNK_WRITE(V2) {
+  int pinValue = param.asInt();  // assigning incoming value from pin V2 to a variable
+  // You can also use:
+  // String i = param.asStr();
+  // double d = param.asDouble();
+  Serial.print("V2 Button value is: ");
+  Serial.println(pinValue);
+}
 
   //
 }
