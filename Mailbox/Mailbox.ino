@@ -93,6 +93,8 @@ void setup() {
   //servo.attach(D8, 544, 2400);                //using the servo library to set the pin and the max and min value of roation set through miliseconds linked to the pwm.
   //servo.write(0);                             // these values are calibrated for the servo motor being placed on the internal ledge with the brown wire facing down.
   
+  //Servo.attach(D8, 544, 2400);                //using the servo library to set the pin and the max and min value of roation set through miliseconds linked to the pwm.
+  //Servo.write(0);                             // these values are calibrated for the servo motor being placed on the internal ledge with the brown wire facing down.
   // This function will be called every time Slider Widget
 // in Blynk web writes values to the Virtual Pin 1
 BLYNK_WRITE(V1) {
