@@ -78,6 +78,11 @@ void setup() {
   counter = 0;
   Blynk.virtualWrite(V0, counter);
 
+  //motor 
+  servo.attach(D8, 544, 2400);                //using the servo library to set the pin and the max and min value of roation set through miliseconds linked to the pwm.
+  servo.write(0);                             // these values are calibrated for the servo motor being placed on the internal ledge with the brown wire facing down.
+  
+
   //
 }
 
@@ -154,4 +159,12 @@ void checkLight() {
     prevLight = currentLight;
     delay(500);
   }
+}
+
+void lockDoor() {
+  servo.write(0);               //when the motor rod is angled at 0 degrees, the bottle cap(lock meachnism for prototype), will prevent the door from being opened
+}
+
+void unlockDoor() {
+  servo.write(180);         //motor rod angled at 180 degrees and lock mechanism and therefor door is free to move
 }
