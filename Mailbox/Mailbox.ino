@@ -20,6 +20,8 @@ on 09/01/2024
 #include <BlynkSimpleEsp8266.h>
 #include <Wire.h>
 
+Servo servo;
+
 
 // Macros
 #define RST D0  // Configurable pins as stated on the fritzing circuit
@@ -98,8 +100,8 @@ void setup() {
   Blynk.virtualWrite(V0, counter);
 
   //motor 
-  //Servo.attach(D8, 544, 2400);                //using the servo library to set the pin and the max and min value of roation set through miliseconds linked to the pwm.
-  //Servo.write(0);                             // these values are calibrated for the servo motor being placed on the internal ledge with the brown wire facing down.
+  //servo.attach(D8, 544, 2400);                //using the servo library to set the pin and the max and min value of roation set through miliseconds linked to the pwm.
+  //servo.write(0);                             // these values are calibrated for the servo motor being placed on the internal ledge with the brown wire facing down.
   
 
   //

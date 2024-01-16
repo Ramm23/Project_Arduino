@@ -1,0 +1,28 @@
+{
+  "name": "Blynk For Chinese",
+  "version": "0.5.9",
+  "description": "利用Blynk平台，可以快速搭建物联网应用。",
+  "keywords": "blynk,sensors, control, device, smartphone, mobile, app, web, cloud, communication, protocol, iot, m2m, wifi, ble, bluetooth, ethernet, usb, serial, gsm, gprs, 3g, data, esp8266, http",
+  "authors":
+  {
+    "name":  "hznupeter",
+    "url":   "https://github.com/hznupeter",
+    "maintainer": true
+  },
+  "repository":
+  {
+    "type": "git",
+    "url": "https://github.com/hznupeter/blynk-library-for-chinese.git"
+  },
+  "homepage": "http://blynk.cc",
+  "export": {
+    "exclude": [
+      "linux",
+      "extras",
+      "tests"
+    ]
+  },
+  "frameworks": "*",
+  "platforms": "*",
+  "examples": "examples/*/*/*.ino"
+}
