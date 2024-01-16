@@ -39,7 +39,7 @@ BlynkTimer timer;  // Initializes timer for uptime log
 // Your WiFi credentials.
 // Set password to "" for open networks.
 char ssid[] = "ICE";
-char pass[] = "Bund1Ice"; // Henrik's mobile hotspot. You are welcome to join :)
+char pass[] = "Bund1Ice";  // Henrik's mobile hotspot. You are welcome to join :)
 
 
 // constants won't change. They're used here to set pin numbers:
@@ -49,6 +49,7 @@ const int buttonPin = D0;  // the number of the pushbutton pin.
 int buttonState;            // the current reading from the input pin
 int lastButtonState = LOW;  // the previous reading from the input pin
 int counter;                // Counter to increase
+
 // the following variables are unsigned longs because the time, measured in
 // milliseconds, will quickly become a bigger number than can be stored in an int.
 unsigned long lastDebounceTime = 0;  // the last time the output pin was toggled
@@ -79,6 +80,17 @@ void setup() {
   Blynk.virtualWrite(V0, counter);
 }
 
+// This function will be called every time Slider Widget
+// in Blynk app writes values to the Virtual Pin 1
+BLYNK_WRITE(V1) {
+  int pinValue = param.asInt();  // assigning incoming value from pin V1 to a variable
+  // You can also use:
+  // String i = param.asStr();
+  // double d = param.asDouble();
+  Serial.print("V1 Slider value is: ");
+  Serial.println(pinValue);
+}
+
 void loop() {
   Blynk.run();
   timer.run();  // Initiates BlynkTimer
@@ -95,7 +107,7 @@ void loop() {
     // reset the debouncing timer
     lastDebounceTime = millis();
   }
-  // The debouncing is used for testing, might not be needed when light sensor is implemented. 
+  // The debouncing is used for testing, might not be needed when light sensor is implemented.
   if ((millis() - lastDebounceTime) > debounceDelay) {
     // whatever the reading is at, it's been there for longer than the debounce
     // delay, so take it as the actual current state:
