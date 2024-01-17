@@ -57,7 +57,7 @@ char ssid[] = "ICE";
 char pass[] = "Bund1Ice";  // Henrik's mobile hotspot. You are welcome to join :)
 //char ssid[] = "Zyxel_B6F1";
 //char pass[] = "R3787P33UX";
-int counter;               // Counter to increase
+int counter;  // Counter to increase
 
 
 //RFID instance
@@ -70,7 +70,8 @@ float currentLight = 0.0;
 //Master-slave variables
 char* messageToSend;  // Global variable to store the message
 int c = 3;
-char c_char = '3'; 
+char c_char = '3';
+char* userName;
 
 
 void setup() {
@@ -116,6 +117,19 @@ BLYNK_WRITE(V2) {
   // double d = param.asDouble();
   Serial.print("V2 Button value is: ");
   Serial.println(pinValue);
+}
+
+BLYNK_WRITE(V0) {
+  // Set incoming value from pin V0 to a variable
+  int value = param.asInt();
+
+  int val = 180 * value;  // scale it to use it with the servo (value between 0 and 180)
+
+  servo.write(val);  // sets the servo position according to the scaled value
+
+  //delay(15);
+  // Update state
+  //Blynk.virtualWrite(V1, userName);
 }
 
 //
@@ -164,7 +178,7 @@ void loop() {
     // Show green light on the RGB
     // do server read, and if button == high, the mailbox opens. (A bit unnecessary, but we need to do a server.read)
     // Send name of person to server, and time of day from real time clock.
-    while (c != 48 && c != 49){
+    while (c != 48 && c != 49) {
       communication_receive_M();
       Serial.print(c);
     }
@@ -181,12 +195,12 @@ void loop() {
     // Show green light on the RGB
     // do server read, and if button == high, the mailbox opens. (A bit unnecessary, but we need to do a server.read)
     // Send name of person to server, and time of day from real time clock.
-    while (c != 48 && c != 49){
+    while (c != 48 && c != 49) {
       communication_receive_M();
       Serial.print(c);
     }
   }
-  if (content.substring(1) == "04 AB 8F AA DA 51 80" || content.substring(1) == "26 8B 2D E6") // Henriks Keychain and DTU card //change here the UID of the card/cards that you want to give access
+  if (content.substring(1) == "04 AB 8F AA DA 51 80" || content.substring(1) == "26 8B 2D E6")  // Henriks Keychain and DTU card //change here the UID of the card/cards that you want to give access
   {
     Serial.println("Passing over to slave");
     messageToSend = "C";     // Assign the message to the global variable
@@ -198,12 +212,12 @@ void loop() {
     // Show green light on the RGB
     // do server read, and if button == high, the mailbox opens. (A bit unnecessary, but we need to do a server.read)
     // Send name of person to server, and time of day from real time clock.
-    while (c != 48 && c != 49){
+    while (c != 48 && c != 49) {
       communication_receive_M();
       Serial.print(c);
     }
   }
-  if (content.substring(1) == "56 73 B8 75") // Johanita's DTU card //change here the UID of the card/cards that you want to give access
+  if (content.substring(1) == "56 73 B8 75")  // Johanita's DTU card //change here the UID of the card/cards that you want to give access
   {
     Serial.println("Passing over to slave");
     messageToSend = "D";     // Assign the message to the global variable
@@ -215,12 +229,12 @@ void loop() {
     // Show green light on the RGB
     // do server read, and if button == high, the mailbox opens. (A bit unnecessary, but we need to do a server.read)
     // Send name of person to server, and time of day from real time clock.
-    while (c != 48 && c != 49){
+    while (c != 48 && c != 49) {
       communication_receive_M();
       Serial.print(c);
     }
   }
-  if (content.substring(1) == "E4 4A E5 52") // Romel's DTU card //change here the UID of the card/cards that you want to give access
+  if (content.substring(1) == "E4 4A E5 52")  // Romel's DTU card //change here the UID of the card/cards that you want to give access
   {
     Serial.println("Passing over to slave");
     messageToSend = "E";     // Assign the message to the global variable
@@ -232,7 +246,7 @@ void loop() {
     // Show green light on the RGB
     // do server read, and if button == high, the mailbox opens. (A bit unnecessary, but we need to do a server.read)
     // Send name of person to server, and time of day from real time clock.
-    while (c != 48 && c != 49){
+    while (c != 48 && c != 49) {
       communication_receive_M();
       Serial.print(c);
     }
@@ -248,6 +262,8 @@ void loop() {
     digitalWrite(LED_BUILTIN, LOW);   // turn the LED off by making the voltage LOW
     delay(1000);
     Serial.print("Correct passcode!");
+
+    //Blynk.virtualWrite(V3, userName);
   } else if (c == 48) {
     digitalWrite(LED_BUILTIN, HIGH);  // turn the LED on (HIGH is the voltage level)
     delay(1000);                      // wait for a second
@@ -256,7 +272,7 @@ void loop() {
     Serial.print("Wrong passcode!");
   }
   c = 51;
-/*
+  /*
   else {
     Serial.println(" Access denied");
     // Red light
@@ -299,19 +315,17 @@ void unlockDoor() {
 void communication_send_M() {
   //Serial.print("Sending A");
   Wire.beginTransmission(8);  // Address of the slave
-  Wire.write(messageToSend);            // Send a command (character 'A' in this example)
+  Wire.write(messageToSend);  // Send a command (character 'A' in this example)
   Wire.endTransmission();
-  
 }
 
 void communication_receive_M() {
   Wire.requestFrom(8, 1);  // request 2 bytes from slave device #8; change according to need
   Serial.print("\n");
   while (Wire.available()) {  // slave may send less than requested
-    c = Wire.read(); 
-    c_char = (char)c;    // receive a byte as character
+    c = Wire.read();
+    c_char = (char)c;  // receive a byte as character
     //Serial.print(c);          // print the character
-    
   }
   delay(1000);
 }
