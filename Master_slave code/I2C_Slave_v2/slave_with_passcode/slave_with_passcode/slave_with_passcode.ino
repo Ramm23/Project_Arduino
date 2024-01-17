@@ -25,6 +25,7 @@ String passcodeA = "1234";
 String passcodeB = "2345";
 String passcodeC = "3456";
 String passcodeD = "4567";
+String passcodeE = "5678";
 char* messageToSend;  // Assuming it's a single character
 
 char message_received = '0';  //1 if a message has been received; 0 if a message has not been received
@@ -134,7 +135,7 @@ void check_code() {  //adapted code from https://arduinogetstarted.com/faq/how-t
 
 void check_correctness() {
   Serial.print("\nChecking correctenss...");
-  Serial.print("\for password:");
+  Serial.print(" for password:");
   Serial.print(command);
   if (command == 'A' && inputString.equals(passcodeA)) {
     Serial.print("\nCorrect!");
@@ -154,6 +155,10 @@ void check_correctness() {
     Serial.print("\nCorrect!");
     messageToSend = "1";
   }   
+  else if (command == 'E' && inputString.equals(passcodeE)) {
+    Serial.print("\nCorrect!");
+    messageToSend = "1";
+  }
   else {
     Serial.print("\nPassword incorrect");
     Serial.print("\nReceived password: ");

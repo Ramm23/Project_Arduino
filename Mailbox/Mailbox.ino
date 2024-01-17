@@ -186,7 +186,57 @@ void loop() {
       Serial.print(c);
     }
   }
-
+  if (content.substring(1) == "04 AB 8F AA DA 51 80" || content.substring(1) == "26 8B 2D E6") // Henriks Keychain and DTU card //change here the UID of the card/cards that you want to give access
+  {
+    Serial.println("Passing over to slave");
+    messageToSend = "C";     // Assign the message to the global variable
+    communication_send_M();  //sending data from master to slave
+    // Show yellow light on the RGB
+    // call function that initiates numpad on the slave Arduino. Check if the password is correct on the slave.
+    // If Master recieves recieves "Correct" then continue, otherwise show RED light.
+    // If the password is correct, send HIGH to server.
+    // Show green light on the RGB
+    // do server read, and if button == high, the mailbox opens. (A bit unnecessary, but we need to do a server.read)
+    // Send name of person to server, and time of day from real time clock.
+    while (c != 48 && c != 49){
+      communication_receive_M();
+      Serial.print(c);
+    }
+  }
+  if (content.substring(1) == "56 73 B8 75") // Johanita's DTU card //change here the UID of the card/cards that you want to give access
+  {
+    Serial.println("Passing over to slave");
+    messageToSend = "D";     // Assign the message to the global variable
+    communication_send_M();  //sending data from master to slave
+    // Show yellow light on the RGB
+    // call function that initiates numpad on the slave Arduino. Check if the password is correct on the slave.
+    // If Master recieves recieves "Correct" then continue, otherwise show RED light.
+    // If the password is correct, send HIGH to server.
+    // Show green light on the RGB
+    // do server read, and if button == high, the mailbox opens. (A bit unnecessary, but we need to do a server.read)
+    // Send name of person to server, and time of day from real time clock.
+    while (c != 48 && c != 49){
+      communication_receive_M();
+      Serial.print(c);
+    }
+  }
+  if (content.substring(1) == "E4 4A E5 52") // Romel's DTU card //change here the UID of the card/cards that you want to give access
+  {
+    Serial.println("Passing over to slave");
+    messageToSend = "E";     // Assign the message to the global variable
+    communication_send_M();  //sending data from master to slave
+    // Show yellow light on the RGB
+    // call function that initiates numpad on the slave Arduino. Check if the password is correct on the slave.
+    // If Master recieves recieves "Correct" then continue, otherwise show RED light.
+    // If the password is correct, send HIGH to server.
+    // Show green light on the RGB
+    // do server read, and if button == high, the mailbox opens. (A bit unnecessary, but we need to do a server.read)
+    // Send name of person to server, and time of day from real time clock.
+    while (c != 48 && c != 49){
+      communication_receive_M();
+      Serial.print(c);
+    }
+  }
 
   Serial.println();
   //delay(3000);  // This delay was already in the code, when i got it. But i think it seems fine.
