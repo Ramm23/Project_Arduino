@@ -1,6 +1,6 @@
 /*
 
-Created by Romel Meza, Henrik Hynkemejer, Frederik Trier, Max Brazhnyy
+Created by Romel Meza, Henrik Hynkemejer, FLED_BUILTINerik Trier, Max Brazhnyy
 on 09/01/2024
 
 */
@@ -24,7 +24,7 @@ Servo servo;
 
 
 // Macros
-#define RST D0  // Configurable pins as stated on the fritzing circuit
+//#define RST D0  // Configurable pins as stated on the fritzing circuit
 
 // RFID pins
 #define RST_PIN D3
@@ -40,18 +40,17 @@ Servo servo;
 //D2
 
 //RGB pins
-#define RED D0
-#define BLUE SD2
-#define GREEN SD3
+//#define LED_BUILTIN D10
+#define GREEN D8
 
 //Other pins
 #define PHOTORESISTOR A0
-#define MOTOR D8
+#define MOTOR D0
 
 
 BlynkTimer timer;  // Initializes timer for uptime log
 
-// Your WiFi credentials.
+// Your WiFi cLED_BUILTINentials.
 // Set password to "" for open networks.
 char ssid[] = "ICE";
 char pass[] = "Bund1Ice";  // Henrik's mobile hotspot. You are welcome to join :)
@@ -75,6 +74,9 @@ char c_char = '3';
 
 
 void setup() {
+  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(GREEN, OUTPUT);
+
   Serial.begin(115200);
   Wire.begin(D2, D1);   //works with D2-A4 and D1-A5
   messageToSend = "1";  // Assign the message to the global variable
@@ -90,12 +92,14 @@ void setup() {
   timer.setInterval(1000L, myTimerEvent);
 
   // Reset mail counter
-  counter = 0;
+  counter = -1;
   Blynk.virtualWrite(V0, counter);
 
   //motor
-  servo.attach(MOTOR, 544, 2400);                //using the servo library to set the pin and the max and min value of roation set through miliseconds linked to the pwm.
-  servo.write(0);                             // these values are calibrated for the servo motor being placed on the internal ledge with the brown wire facing down.
+  servo.attach(MOTOR, 544, 2400);  //using the servo library to set the pin and the max and min value of roation set through miliseconds linked to the pwm.
+  servo.write(180);                // these values are calibrated for the servo motor being placed on the internal ledge with the brown wire facing down.
+
+ 
 }
 // This function will be called every time Slider Widget
 // in Blynk web writes values to the Virtual Pin 1
@@ -106,6 +110,13 @@ BLYNK_WRITE(V1) {
   // double d = param.asDouble();
   Serial.print("V1 Slider value is: ");
   Serial.println(pinValue);
+
+  int value = param.asInt();
+
+  int val = 180 * value;  // scale it to use it with the servo (value between 0 and 180)
+
+  servo.write(val);
+  counter = 0;
 }
 
 // This function will be called every time Button Widget
@@ -117,20 +128,16 @@ BLYNK_WRITE(V2) {
   // double d = param.asDouble();
   Serial.print("V2 Button value is: ");
   Serial.println(pinValue);
-}
 
-BLYNK_WRITE(V0) {
-  // Set incoming value from pin V0 to a variable
   int value = param.asInt();
 
   int val = 180 * value;  // scale it to use it with the servo (value between 0 and 180)
 
-  servo.write(val);  // sets the servo position according to the scaled value
-
-  //delay(15);
-  // Update state
-  //Blynk.virtualWrite(V1, userName);
+  servo.write(val);
+  counter = 0;
 }
+
+
 
 //
 
@@ -168,13 +175,17 @@ void loop() {
   Serial.print(content.substring(1));
   if (content.substring(1) == "6C 40 CB 38")  //change here the UID of the card/cards that you want to give access
   {
+    digitalWrite(LED_BUILTIN, HIGH);
+    digitalWrite(GREEN, HIGH);
+
     Serial.println("Passing over to slave");
     messageToSend = "A";     // Assign the message to the global variable
     communication_send_M();  //sending data from master to slave
-    Blynk.virtualWrite(V3, "Frederik");
+    Blynk.virtualWrite(V3, "FLED_BUILTINerik");
+    counter = 0;
     // Show yellow light on the RGB
     // call function that initiates numpad on the slave Arduino. Check if the password is correct on the slave.
-    // If Master recieves recieves "Correct" then continue, otherwise show RED light.
+    // If Master recieves recieves "Correct" then continue, otherwise show LED_BUILTIN light.
     // If the password is correct, send HIGH to server.
     // Show green light on the RGB
     // do server read, and if button == high, the mailbox opens. (A bit unnecessary, but we need to do a server.read)
@@ -183,16 +194,19 @@ void loop() {
       communication_receive_M();
       Serial.print(c);
     }
-  }
-  if (content.substring(1) == "53 55 F8 34")  //change here the UID of the card/cards that you want to give access
+  } else if (content.substring(1) == "53 55 F8 34")  //change here the UID of the card/cards that you want to give access
   {
+    digitalWrite(LED_BUILTIN, HIGH);
+    digitalWrite(GREEN, HIGH);
+
     Serial.println("Passing over to slave");
     messageToSend = "B";     // Assign the message to the global variable
     communication_send_M();  //sending data from master to slave
     Blynk.virtualWrite(V3, "Max");
+    counter = 0;
     // Show yellow light on the RGB
     // call function that initiates numpad on the slave Arduino. Check if the password is correct on the slave.
-    // If Master recieves recieves "Correct" then continue, otherwise show RED light.
+    // If Master recieves recieves "Correct" then continue, otherwise show LED_BUILTIN light.
     // If the password is correct, send HIGH to server.
     // Show green light on the RGB
     // do server read, and if button == high, the mailbox opens. (A bit unnecessary, but we need to do a server.read)
@@ -201,17 +215,19 @@ void loop() {
       communication_receive_M();
       Serial.print(c);
     }
-  }
-  if (content.substring(1) == "04 AB 8F AA DA 51 80" || content.substring(1) == "26 8B 2D E6")  // Henriks Keychain and DTU card //change here the UID of the card/cards that you want to give access
+  } else if (content.substring(1) == "04 AB 8F AA DA 51 80" || content.substring(1) == "26 8B 2D E6")  // Henriks Keychain and DTU card //change here the UID of the card/cards that you want to give access
   {
+    digitalWrite(LED_BUILTIN, HIGH);
+    digitalWrite(GREEN, HIGH);
+
     Serial.println("Passing over to slave");
     messageToSend = "C";     // Assign the message to the global variable
     communication_send_M();  //sending data from master to slave
     Blynk.virtualWrite(V3, "Henrik");
-
+    counter = 0;
     // Show yellow light on the RGB
     // call function that initiates numpad on the slave Arduino. Check if the password is correct on the slave.
-    // If Master recieves recieves "Correct" then continue, otherwise show RED light.
+    // If Master recieves recieves "Correct" then continue, otherwise show LED_BUILTIN light.
     // If the password is correct, send HIGH to server.
     // Show green light on the RGB
     // do server read, and if button == high, the mailbox opens. (A bit unnecessary, but we need to do a server.read)
@@ -220,16 +236,18 @@ void loop() {
       communication_receive_M();
       Serial.print(c);
     }
-  }
-  if (content.substring(1) == "56 73 B8 75")  // Johanita's DTU card //change here the UID of the card/cards that you want to give access
+  } else if (content.substring(1) == "56 73 B8 75")  // Johanita's DTU card //change here the UID of the card/cards that you want to give access
   {
+    digitalWrite(LED_BUILTIN, HIGH);
+    digitalWrite(GREEN, HIGH);
+
     Serial.println("Passing over to slave");
     messageToSend = "D";     // Assign the message to the global variable
     communication_send_M();  //sending data from master to slave
     Blynk.virtualWrite(V3, "Johanita");
     // Show yellow light on the RGB
     // call function that initiates numpad on the slave Arduino. Check if the password is correct on the slave.
-    // If Master recieves recieves "Correct" then continue, otherwise show RED light.
+    // If Master recieves recieves "Correct" then continue, otherwise show LED_BUILTIN light.
     // If the password is correct, send HIGH to server.
     // Show green light on the RGB
     // do server read, and if button == high, the mailbox opens. (A bit unnecessary, but we need to do a server.read)
@@ -238,16 +256,19 @@ void loop() {
       communication_receive_M();
       Serial.print(c);
     }
-  }
-  if (content.substring(1) == "E4 4A E5 52")  // Romel's DTU card //change here the UID of the card/cards that you want to give access
+  } else if (content.substring(1) == "E4 4A E5 52")  // Romel's DTU card //change here the UID of the card/cards that you want to give access
   {
+    digitalWrite(LED_BUILTIN, HIGH);
+    digitalWrite(GREEN, HIGH);
+
     Serial.println("Passing over to slave");
     messageToSend = "E";     // Assign the message to the global variable
     communication_send_M();  //sending data from master to slave
     Blynk.virtualWrite(V3, "Romel");
+    counter = 0;
     // Show yellow light on the RGB
     // call function that initiates numpad on the slave Arduino. Check if the password is correct on the slave.
-    // If Master recieves recieves "Correct" then continue, otherwise show RED light.
+    // If Master recieves recieves "Correct" then continue, otherwise show LED_BUILTIN light.
     // If the password is correct, send HIGH to server.
     // Show green light on the RGB
     // do server read, and if button == high, the mailbox opens. (A bit unnecessary, but we need to do a server.read)
@@ -256,6 +277,13 @@ void loop() {
       communication_receive_M();
       Serial.print(c);
     }
+  } else {
+    digitalWrite(LED_BUILTIN, HIGH);
+    analogWrite(GREEN, 0);
+
+    delay(5000);
+    analogWrite(LED_BUILTIN, 0);
+    analogWrite(GREEN, 0);
   }
 
   Serial.println();
@@ -268,9 +296,26 @@ void loop() {
     digitalWrite(LED_BUILTIN, LOW);   // turn the LED off by making the voltage LOW
     delay(1000);
     Serial.print("Correct passcode!");
-    servo.write(180);
-    delay(30000);
+
     servo.write(0);
+    analogWrite(LED_BUILTIN, 0);
+    digitalWrite(GREEN, HIGH);
+
+    delay(20000);
+
+    for (int i = 0; i < 20; i++) {
+      digitalWrite(LED_BUILTIN, HIGH);
+      digitalWrite(GREEN, HIGH);
+
+      delay(5000);
+      analogWrite(LED_BUILTIN, 0);
+      analogWrite(GREEN, 0);
+    }
+    analogWrite(LED_BUILTIN, 0);
+    analogWrite(GREEN, 0);
+
+
+    servo.write(180);
 
     //Blynk.virtualWrite(V3, userName);
   } else if (c == 48) {
@@ -278,13 +323,21 @@ void loop() {
     delay(1000);                      // wait for a second
     digitalWrite(LED_BUILTIN, LOW);   // turn the LED off by making the voltage LOW
     delay(1000);
+
     Serial.print("Wrong passcode!");
+
+    digitalWrite(LED_BUILTIN, HIGH);
+    analogWrite(GREEN, 0);
+
+    delay(5000);
+    analogWrite(LED_BUILTIN, 0);
+    analogWrite(GREEN, 0);
   }
   c = 51;
   /*
   else {
     Serial.println(" Access denied");
-    // Red light
+    // LED_BUILTIN light
     delay(3000);
   }
   */
@@ -306,7 +359,7 @@ void checkLight() {
     delay(500);
     prevLight = currentLight;  //updating the light level
     delay(500);
-  } else {  //gradual light change due to noise - no action required
+  } else {  //gradual light change due to noise - no action requiLED_BUILTIN
     delay(500);
     prevLight = currentLight;
     delay(500);
@@ -314,11 +367,11 @@ void checkLight() {
 }
 
 void lockDoor() {
-  servo.write(0);               //when the motor rod is angled at 0 degrees, the bottle cap(lock meachnism for prototype), will prevent the door from being opened
+  servo.write(0);  //when the motor rod is angled at 0 degrees, the bottle cap(lock meachnism for prototype), will prevent the door from being opened
 }
 
 void unlockDoor() {
-  servo.write(180);         //motor rod angled at 180 degrees and lock mechanism and therefor door is free to move
+  servo.write(180);  //motor rod angled at 180 degrees and lock mechanism and therefor door is free to move
 }
 
 void communication_send_M() {
