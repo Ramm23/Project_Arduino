@@ -71,7 +71,7 @@ float currentLight = 0.0;
 char* messageToSend;  // Global variable to store the message
 int c = 3;
 char c_char = '3';
-char* userName;
+
 
 
 void setup() {
@@ -204,7 +204,10 @@ void loop() {
   {
     Serial.println("Passing over to slave");
     messageToSend = "C";     // Assign the message to the global variable
-    communication_send_M();  //sending data from master to slave
+    communication_send_M();  //sending data from master to slave'
+    char* userName = "Henrik";
+    Blynk.virtualWrite(V1, userName);
+
     // Show yellow light on the RGB
     // call function that initiates numpad on the slave Arduino. Check if the password is correct on the slave.
     // If Master recieves recieves "Correct" then continue, otherwise show RED light.
