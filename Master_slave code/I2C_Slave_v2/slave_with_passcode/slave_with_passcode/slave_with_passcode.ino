@@ -56,13 +56,13 @@ void loop() {
 
   check_correctness();
 
-  delay(100);
+ 
   
   communication_send_s();  // sending data from slave to master
-  Serial.print("\nnot Delay for 10 seconds ");
-  //delay(10000);
+  Serial.print("\n Delay for 3 seconds ");
+  delay(3000);
   //messageToSend = "3";
-  message_received = '0';
+  //message_received = '0';
 }
 
 
@@ -84,7 +84,8 @@ void requestEvent() {
   Serial.print("Sending");
   Serial.print(messageToSend);
   Wire.write(messageToSend, sizeof(messageToSend + 1));
-  messageToSend = "3";
+  delay(1500);
+  //messageToSend = "3";
 }
 
 void communication_send_s() {
@@ -97,6 +98,7 @@ void communication_receive_s() {
 
 void check_code() {  //adapted code from https://arduinogetstarted.com/faq/how-to-input-a-multiple-digits-number-using-the-keypad?utm_content=cmp-true
   Serial.print("\n \nInput your password, please:");
+  messageToSend = "3";
   inputString = "";  // Reset the inputString for the next input
   while (inputString.length() != 4) {
 
@@ -131,21 +133,21 @@ void check_correctness() {
   Serial.print('\nChecking correctenss...');
   if (command == 'A' && inputString.equals(passcodeA)) {
     Serial.print("\nCorrect!");
-    messageToSend = '1';
+    messageToSend = "1";
     Serial.print("\nif A inside check correctness; messageToSend = ");
     Serial.print(messageToSend);
   } 
   else if (command == 'B' && inputString.equals(passcodeB)) {
     Serial.print("\nCorrect!");
-    messageToSend = '1';
+    messageToSend = "1";
   } 
   else if (command == 'C' && inputString.equals(passcodeC)) {
     Serial.print("\nCorrect!");
-    messageToSend = '1';
+    messageToSend = "1";
   }   
   else if (command == 'D' && inputString.equals(passcodeD)) {
     Serial.print("\nCorrect!");
-    messageToSend = '1';
+    messageToSend = "1";
   }   
   else {
     Serial.print("\nPassword incorrect");
@@ -154,3 +156,4 @@ void check_correctness() {
     messageToSend = "0";
   }
 }
+///

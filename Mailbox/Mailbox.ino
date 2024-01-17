@@ -53,10 +53,10 @@ BlynkTimer timer;  // Initializes timer for uptime log
 
 // Your WiFi credentials.
 // Set password to "" for open networks.
-// char ssid[] = "ICE";
-// char pass[] = "Bund1Ice";  // Henrik's mobile hotspot. You are welcome to join :)
-char ssid[] = "Zyxel_B6F1";
-char pass[] = "R3787P33UX";
+char ssid[] = "ICE";
+char pass[] = "Bund1Ice";  // Henrik's mobile hotspot. You are welcome to join :)
+//char ssid[] = "Zyxel_B6F1";
+//char pass[] = "R3787P33UX";
 int counter;               // Counter to increase
 
 
@@ -122,6 +122,7 @@ BLYNK_WRITE(V2) {
 
 
 void loop() {
+  Serial.print("top of loop");
   Blynk.run();
   timer.run();  // Initiates BlynkTimer
   //check change in light levels
