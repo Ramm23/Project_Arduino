@@ -171,6 +171,7 @@ void loop() {
     Serial.println("Passing over to slave");
     messageToSend = "A";     // Assign the message to the global variable
     communication_send_M();  //sending data from master to slave
+    Blynk.virtualWrite(V3, "Frederik");
     // Show yellow light on the RGB
     // call function that initiates numpad on the slave Arduino. Check if the password is correct on the slave.
     // If Master recieves recieves "Correct" then continue, otherwise show RED light.
@@ -188,6 +189,7 @@ void loop() {
     Serial.println("Passing over to slave");
     messageToSend = "B";     // Assign the message to the global variable
     communication_send_M();  //sending data from master to slave
+    Blynk.virtualWrite(V3, "Max");
     // Show yellow light on the RGB
     // call function that initiates numpad on the slave Arduino. Check if the password is correct on the slave.
     // If Master recieves recieves "Correct" then continue, otherwise show RED light.
@@ -204,9 +206,8 @@ void loop() {
   {
     Serial.println("Passing over to slave");
     messageToSend = "C";     // Assign the message to the global variable
-    communication_send_M();  //sending data from master to slave'
-    char* userName = "Henrik";
-    Blynk.virtualWrite(V1, userName);
+    communication_send_M();  //sending data from master to slave
+    Blynk.virtualWrite(V3, "Henrik");
 
     // Show yellow light on the RGB
     // call function that initiates numpad on the slave Arduino. Check if the password is correct on the slave.
@@ -225,6 +226,7 @@ void loop() {
     Serial.println("Passing over to slave");
     messageToSend = "D";     // Assign the message to the global variable
     communication_send_M();  //sending data from master to slave
+    Blynk.virtualWrite(V3, "Johanita");
     // Show yellow light on the RGB
     // call function that initiates numpad on the slave Arduino. Check if the password is correct on the slave.
     // If Master recieves recieves "Correct" then continue, otherwise show RED light.
@@ -242,6 +244,7 @@ void loop() {
     Serial.println("Passing over to slave");
     messageToSend = "E";     // Assign the message to the global variable
     communication_send_M();  //sending data from master to slave
+    Blynk.virtualWrite(V3, "Romel");
     // Show yellow light on the RGB
     // call function that initiates numpad on the slave Arduino. Check if the password is correct on the slave.
     // If Master recieves recieves "Correct" then continue, otherwise show RED light.
@@ -265,6 +268,9 @@ void loop() {
     digitalWrite(LED_BUILTIN, LOW);   // turn the LED off by making the voltage LOW
     delay(1000);
     Serial.print("Correct passcode!");
+    servo.write(180);
+    delay(30000);
+    servo.write(0);
 
     //Blynk.virtualWrite(V3, userName);
   } else if (c == 48) {
