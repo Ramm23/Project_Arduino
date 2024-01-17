@@ -169,6 +169,23 @@ void loop() {
       Serial.print(c);
     }
   }
+  if (content.substring(1) == "53 55 F8 34")  //change here the UID of the card/cards that you want to give access
+  {
+    Serial.println("Passing over to slave");
+    messageToSend = "B";     // Assign the message to the global variable
+    communication_send_M();  //sending data from master to slave
+    // Show yellow light on the RGB
+    // call function that initiates numpad on the slave Arduino. Check if the password is correct on the slave.
+    // If Master recieves recieves "Correct" then continue, otherwise show RED light.
+    // If the password is correct, send HIGH to server.
+    // Show green light on the RGB
+    // do server read, and if button == high, the mailbox opens. (A bit unnecessary, but we need to do a server.read)
+    // Send name of person to server, and time of day from real time clock.
+    while (c != 48 && c != 49){
+      communication_receive_M();
+      Serial.print(c);
+    }
+  }
 
 
   Serial.println();
@@ -232,7 +249,7 @@ void unlockDoor() {
 void communication_send_M() {
   //Serial.print("Sending A");
   Wire.beginTransmission(8);  // Address of the slave
-  Wire.write("A");            // Send a command (character 'A' in this example)
+  Wire.write(messageToSend);            // Send a command (character 'A' in this example)
   Wire.endTransmission();
   
 }

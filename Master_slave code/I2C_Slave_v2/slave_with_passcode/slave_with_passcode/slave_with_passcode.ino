@@ -69,6 +69,8 @@ void loop() {
 void receiveEvent() {
   // Receive and process the command from the master
   Serial.print("\n");
+  Serial.print("command before =");
+  Serial.print(command);
   while (Wire.available()) {
     command = Wire.read();
     //Serial.print(command);
@@ -76,7 +78,7 @@ void receiveEvent() {
       message_received = '1';
     } else message_received = "0";
   }
-  Serial.print("command =");
+  Serial.print("command after =");
   Serial.print(command);
 }
 
@@ -93,6 +95,7 @@ void communication_send_s() {
 }
 
 void communication_receive_s() {
+  
   Wire.onReceive(receiveEvent);
 }
 
@@ -130,7 +133,9 @@ void check_code() {  //adapted code from https://arduinogetstarted.com/faq/how-t
 }
 
 void check_correctness() {
-  Serial.print('\nChecking correctenss...');
+  Serial.print("\nChecking correctenss...");
+  Serial.print("\for password:");
+  Serial.print(command);
   if (command == 'A' && inputString.equals(passcodeA)) {
     Serial.print("\nCorrect!");
     messageToSend = "1";
