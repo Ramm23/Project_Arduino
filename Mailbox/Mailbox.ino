@@ -290,7 +290,6 @@ void loop() {
   Serial.print("received output from slave:");
   Serial.print(c);
   if (c == 49) {
-    flashLight(GREEN, 5);
     Serial.print("Correct passcode!");
     counter = 0;
     Blynk.virtualWrite(V0, counter);
