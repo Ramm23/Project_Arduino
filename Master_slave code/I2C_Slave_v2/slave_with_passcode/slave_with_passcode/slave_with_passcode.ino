@@ -54,7 +54,11 @@ void loop() {
     
     delay(100);
     communication_receive_s();  // receiving data on slave from master
+    
   }
+  Serial.print("\nLight shoukd flash now");
+  flashLight(GREEN, 4);
+  
   check_code();
 
   check_correctness();
@@ -64,8 +68,8 @@ void loop() {
   communication_send_s();  // sending data from slave to master
   Serial.print("\n Delay for 3 seconds ");
   delay(3000);
-  //messageToSend = "3";
-  //message_received = '0';
+  messageToSend = "3";
+  message_received = '0';
 }
 
 
@@ -103,7 +107,7 @@ void communication_receive_s() {
 }
 
 void check_code() {  //adapted code from https://arduinogetstarted.com/faq/how-to-input-a-multiple-digits-number-using-the-keypad?utm_content=cmp-true
-  flashLight(GREEN, 4);
+  
   Serial.print("\n \nInput your password, please:");
   messageToSend = "3";
   inputString = "";  // Reset the inputString for the next input
