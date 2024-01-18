@@ -107,7 +107,7 @@ BLYNK_WRITE(V1) {
   // You can also use:
   // String i = param.asStr();
   // double d = param.asDouble();
-  counter = 0;
+  counter = -1;
   Blynk.virtualWrite(V0, counter);
   Serial.print("V1 Slider value is: ");
   Serial.println(pinValue);
@@ -127,7 +127,7 @@ BLYNK_WRITE(V2) {
   // You can also use:
   // String i = param.asStr();
   // double d = param.asDouble();
-  counter = 0;
+  counter = -1;
   Blynk.virtualWrite(V0, counter);
   Serial.print("V2 Button value is: ");
   Serial.println(pinValue);
@@ -182,16 +182,13 @@ void loop() {
   Serial.print(content.substring(1));
   if (content.substring(1) == "6C 40 CB 38")  //change here the UID of the card/cards that you want to give access
   {
-    delay(3000);
-    flashLight(GREEN, 4);
-    delay(3000);
     //
 
     Serial.println("Passing over to slave");
     messageToSend = "A";     // Assign the message to the global variable
     communication_send_M();  //sending data from master to slave
     Blynk.virtualWrite(V3, "FLED_BUILTINerik");
-    counter = 0;
+    
     // Show yellow light on the RGB
     // call function that initiates numpad on the slave Arduino. Check if the password is correct on the slave.
     // If Master recieves recieves "Correct" then continue, otherwise show LED_BUILTIN light.
@@ -205,15 +202,13 @@ void loop() {
     }
   } else if (content.substring(1) == "53 55 F8 34")  //change here the UID of the card/cards that you want to give access
   {
-    delay(3000);
-    flashLight(GREEN, 4);
-    delay(3000);
+    
 
     Serial.println("Passing over to slave");
     messageToSend = "B";     // Assign the message to the global variable
     communication_send_M();  //sending data from master to slave
     Blynk.virtualWrite(V3, "Max");
-    counter = 0;
+    
     // Show yellow light on the RGB
     // call function that initiates numpad on the slave Arduino. Check if the password is correct on the slave.
     // If Master recieves recieves "Correct" then continue, otherwise show LED_BUILTIN light.
@@ -233,7 +228,7 @@ void loop() {
     messageToSend = "C";     // Assign the message to the global variable
     communication_send_M();  //sending data from master to slave
     Blynk.virtualWrite(V3, "Henrik");
-    counter = 0;
+    
     // Show yellow light on the RGB
     // call function that initiates numpad on the slave Arduino. Check if the password is correct on the slave.
     // If Master recieves recieves "Correct" then continue, otherwise show LED_BUILTIN light.
@@ -247,7 +242,6 @@ void loop() {
     }
   } else if (content.substring(1) == "56 73 B8 75")  // Johanita's DTU card //change here the UID of the card/cards that you want to give access
   {
-    flashLight(GREEN, 4);
 
     Serial.println("Passing over to slave");
     messageToSend = "D";     // Assign the message to the global variable
@@ -266,13 +260,12 @@ void loop() {
     }
   } else if (content.substring(1) == "E4 4A E5 52")  // Romel's DTU card //change here the UID of the card/cards that you want to give access
   {
-    flashLight(GREEN, 4);
 
     Serial.println("Passing over to slave");
     messageToSend = "E";     // Assign the message to the global variable
     communication_send_M();  //sending data from master to slave
     Blynk.virtualWrite(V3, "Romel");
-    counter = 0;
+    
     // Show yellow light on the RGB
     // call function that initiates numpad on the slave Arduino. Check if the password is correct on the slave.
     // If Master recieves recieves "Correct" then continue, otherwise show LED_BUILTIN light.
@@ -299,6 +292,8 @@ void loop() {
   if (c == 49) {
     flashLight(GREEN, 5);
     Serial.print("Correct passcode!");
+    counter = 0;
+    Blynk.virtualWrite(V0, counter);
 
     servo.write(0);
 
@@ -349,7 +344,7 @@ void myTimerEvent() {
 }
 
 void checkLight() {
-  float threshold = prevLight * 1.3;  //proptional threshold for determinig if light change is gradual or sudden
+  float threshold = prevLight * 1.5;  //proptional threshold for determinig if light change is gradual or sudden
   currentLight = analogRead(PHOTORESISTOR);
   float lightChange = abs(currentLight - prevLight);  //change in light level since last reading
   if (lightChange > threshold) {                      //sudden change in light i.e. mailbox has been opened
