@@ -41,11 +41,12 @@ Servo servo;
 
 //RGB pins
 //#define LED_BUILTIN D10
-#define GREEN D8
+#define GREEN D10
+#define RED D0
 
 //Other pins
 #define PHOTORESISTOR A0
-#define MOTOR D0
+#define MOTOR D8
 
 
 BlynkTimer timer;  // Initializes timer for uptime log
@@ -74,7 +75,7 @@ char c_char = '3';
 
 
 void setup() {
-  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(RED, OUTPUT);
   pinMode(GREEN, OUTPUT);
 
   Serial.begin(115200);
@@ -98,8 +99,6 @@ void setup() {
   //motor
   servo.attach(MOTOR, 544, 2400);  //using the servo library to set the pin and the max and min value of roation set through miliseconds linked to the pwm.
   servo.write(180);                // these values are calibrated for the servo motor being placed on the internal ledge with the brown wire facing down.
-
- 
 }
 // This function will be called every time Slider Widget
 // in Blynk web writes values to the Virtual Pin 1
@@ -143,6 +142,7 @@ BLYNK_WRITE(V2) {
 
 
 void loop() {
+  flashLightsAlternate(5);
   Serial.print("top of loop");
   Blynk.run();
   timer.run();  // Initiates BlynkTimer
@@ -175,8 +175,10 @@ void loop() {
   Serial.print(content.substring(1));
   if (content.substring(1) == "6C 40 CB 38")  //change here the UID of the card/cards that you want to give access
   {
-    digitalWrite(LED_BUILTIN, HIGH);
-    digitalWrite(GREEN, HIGH);
+    delay(3000);
+    flashLight(GREEN,4);
+    delay(3000);
+    //
 
     Serial.println("Passing over to slave");
     messageToSend = "A";     // Assign the message to the global variable
@@ -196,8 +198,9 @@ void loop() {
     }
   } else if (content.substring(1) == "53 55 F8 34")  //change here the UID of the card/cards that you want to give access
   {
-    digitalWrite(LED_BUILTIN, HIGH);
-    digitalWrite(GREEN, HIGH);
+    delay(3000);
+    flashLight(GREEN,4);
+    delay(3000);
 
     Serial.println("Passing over to slave");
     messageToSend = "B";     // Assign the message to the global variable
@@ -217,8 +220,7 @@ void loop() {
     }
   } else if (content.substring(1) == "04 AB 8F AA DA 51 80" || content.substring(1) == "26 8B 2D E6")  // Henriks Keychain and DTU card //change here the UID of the card/cards that you want to give access
   {
-    digitalWrite(LED_BUILTIN, HIGH);
-    digitalWrite(GREEN, HIGH);
+    flashLight(GREEN,4);
 
     Serial.println("Passing over to slave");
     messageToSend = "C";     // Assign the message to the global variable
@@ -238,8 +240,7 @@ void loop() {
     }
   } else if (content.substring(1) == "56 73 B8 75")  // Johanita's DTU card //change here the UID of the card/cards that you want to give access
   {
-    digitalWrite(LED_BUILTIN, HIGH);
-    digitalWrite(GREEN, HIGH);
+    flashLight(GREEN,4);
 
     Serial.println("Passing over to slave");
     messageToSend = "D";     // Assign the message to the global variable
@@ -258,8 +259,7 @@ void loop() {
     }
   } else if (content.substring(1) == "E4 4A E5 52")  // Romel's DTU card //change here the UID of the card/cards that you want to give access
   {
-    digitalWrite(LED_BUILTIN, HIGH);
-    digitalWrite(GREEN, HIGH);
+    flashLight(GREEN,4);
 
     Serial.println("Passing over to slave");
     messageToSend = "E";     // Assign the message to the global variable
@@ -278,12 +278,11 @@ void loop() {
       Serial.print(c);
     }
   } else {
-    digitalWrite(LED_BUILTIN, HIGH);
-    analogWrite(GREEN, 0);
+    flashLight(RED,5);
 
     delay(5000);
-    analogWrite(LED_BUILTIN, 0);
-    analogWrite(GREEN, 0);
+    // analogWrite(LED_BUILTIN, 0);
+    // analogWrite(GREEN, 0);
   }
 
   Serial.println();
@@ -291,47 +290,40 @@ void loop() {
   Serial.print("received output from slave:");
   Serial.print(c);
   if (c == 49) {
-    digitalWrite(LED_BUILTIN, HIGH);  // turn the LED on (HIGH is the voltage level)
-    delay(1000);                      // wait for a second
-    digitalWrite(LED_BUILTIN, LOW);   // turn the LED off by making the voltage LOW
-    delay(1000);
+    flashLight(GREEN,5);
     Serial.print("Correct passcode!");
 
     servo.write(0);
-    analogWrite(LED_BUILTIN, 0);
-    digitalWrite(GREEN, HIGH);
+
 
     delay(20000);
 
-    for (int i = 0; i < 20; i++) {
-      digitalWrite(LED_BUILTIN, HIGH);
-      digitalWrite(GREEN, HIGH);
+    // for (int i = 0; i < 20; i++) {
+    //   digitalWrite(LED_BUILTIN, HIGH);
+    //   digitalWrite(GREEN, HIGH);
 
-      delay(5000);
-      analogWrite(LED_BUILTIN, 0);
-      analogWrite(GREEN, 0);
-    }
-    analogWrite(LED_BUILTIN, 0);
-    analogWrite(GREEN, 0);
+    //   delay(5000);
+    //   analogWrite(LED_BUILTIN, 0);
+    //   analogWrite(GREEN, 0);
+    // }
+    // analogWrite(LED_BUILTIN, 0);
+    // analogWrite(GREEN, 0);
 
 
     servo.write(180);
 
     //Blynk.virtualWrite(V3, userName);
   } else if (c == 48) {
-    digitalWrite(LED_BUILTIN, HIGH);  // turn the LED on (HIGH is the voltage level)
-    delay(1000);                      // wait for a second
-    digitalWrite(LED_BUILTIN, LOW);   // turn the LED off by making the voltage LOW
-    delay(1000);
+    flashLight(RED,5);
 
     Serial.print("Wrong passcode!");
 
-    digitalWrite(LED_BUILTIN, HIGH);
-    analogWrite(GREEN, 0);
+    // digitalWrite(LED_BUILTIN, HIGH);
+    // analogWrite(GREEN, 0);
 
     delay(5000);
-    analogWrite(LED_BUILTIN, 0);
-    analogWrite(GREEN, 0);
+    // analogWrite(LED_BUILTIN, 0);
+    // analogWrite(GREEN, 0);
   }
   c = 51;
   /*
@@ -390,4 +382,26 @@ void communication_receive_M() {
     //Serial.print(c);          // print the character
   }
   delay(1000);
+}
+
+void flashLight(int color,int times) {
+  for (int i = 0; i < times + 1; i++) {
+    digitalWrite(color, HIGH);
+    delay(50);
+    digitalWrite(color, LOW);
+    delay(50);
+  }
+}
+
+void flashLightsAlternate(int times) {
+  for (int i = 0; i < times + 1; i++) {
+    digitalWrite(RED, HIGH);
+    delay(50);
+    digitalWrite(RED, LOW);
+    delay(50);
+    digitalWrite(GREEN, HIGH);
+    delay(50);
+    digitalWrite(GREEN, LOW);
+    delay(50);
+  }
 }

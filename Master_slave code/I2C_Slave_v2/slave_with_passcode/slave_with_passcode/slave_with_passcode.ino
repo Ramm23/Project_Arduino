@@ -2,6 +2,8 @@
 
 #include <Keypad.h>
 
+#define GREEN 12
+
 const byte ROWS = 4;  //four rows
 const byte COLS = 4;  //four columns
 //define the symbols on the buttons of the keypads
@@ -41,7 +43,7 @@ void setup() {
   Serial.begin(115200);
   Wire.begin(8);        // join i2c bus with address #
   //messageToSend = "s";  // Assign the message to the global variable
-  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(GREEN, OUTPUT);
   Serial.print("\nSlave Ready\n");
   
 }
@@ -101,6 +103,7 @@ void communication_receive_s() {
 }
 
 void check_code() {  //adapted code from https://arduinogetstarted.com/faq/how-to-input-a-multiple-digits-number-using-the-keypad?utm_content=cmp-true
+  flashLight(GREEN, 4);
   Serial.print("\n \nInput your password, please:");
   messageToSend = "3";
   inputString = "";  // Reset the inputString for the next input
@@ -139,24 +142,27 @@ void check_correctness() {
   Serial.print(command);
   if (command == 'A' && inputString.equals(passcodeA)) {
     Serial.print("\nCorrect!");
+    flashLight(GREEN, 4);
     messageToSend = "1";
-    Serial.print("\nif A inside check correctness; messageToSend = ");
-    Serial.print(messageToSend);
   } 
   else if (command == 'B' && inputString.equals(passcodeB)) {
     Serial.print("\nCorrect!");
+    flashLight(GREEN, 4);
     messageToSend = "1";
   } 
   else if (command == 'C' && inputString.equals(passcodeC)) {
     Serial.print("\nCorrect!");
+    flashLight(GREEN, 4);
     messageToSend = "1";
   }   
   else if (command == 'D' && inputString.equals(passcodeD)) {
     Serial.print("\nCorrect!");
+    flashLight(GREEN, 4);
     messageToSend = "1";
   }   
   else if (command == 'E' && inputString.equals(passcodeE)) {
     Serial.print("\nCorrect!");
+    flashLight(GREEN, 4);
     messageToSend = "1";
   }
   else {
@@ -167,3 +173,12 @@ void check_correctness() {
   }
 }
 ///
+void flashLight(int color,int times) {
+  for (int i = 0; i < times + 1; i++) {
+    digitalWrite(color, HIGH);
+    delay(50);
+    digitalWrite(color, LOW);
+    delay(50);
+  }
+}
+
