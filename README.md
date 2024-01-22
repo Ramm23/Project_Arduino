@@ -11,7 +11,7 @@ YouTube link: https://youtube.com/shorts/znpJ9I9Wxrc?feature=share
 
 ## Installation
 
-Install [Mailbox.ino](https://github.com/Ramm23/Project_Arduino/blob/main/Mailbox/Mailbox.ino) in the Esp8266 and the [slave_with_passcode.ino](https://github.com/Ramm23/Project_Arduino/blob/main/Master_slave%20code/I2C_Slave_v2/slave_with_passcode/slave_with_passcode/slave_with_passcode.ino) into the Arduino Uno. Follow the circuit layout as specified on  [Master_slave_setup.fzz](https://github.com/Ramm23/Project_Arduino/blob/main/Master_slave%20code/Master_slave_setup.fzz) and lastly modify the Authentication Tokens and ssd and password on the Mailbos.ino file.
+Install [Mailbox.ino](https://github.com/Ramm23/Project_Arduino/blob/main/Mailbox/Mailbox.ino) in the Esp8266 and the [slave_with_passcode.ino](https://github.com/Ramm23/Project_Arduino/blob/main/Master_slave%20code/I2C_Slave_v2/slave_with_passcode/slave_with_passcode/slave_with_passcode.ino) into the Arduino Uno. Follow the circuit layout as specified on  [Master_slave_setup.fzz](https://github.com/Ramm23/Project_Arduino/blob/main/Master_slave%20code/Master_slave_setup.fzz) and lastly modify the Authentication Tokens and ssd and password on the Mailbox.ino file.
     
 ## Features
 
