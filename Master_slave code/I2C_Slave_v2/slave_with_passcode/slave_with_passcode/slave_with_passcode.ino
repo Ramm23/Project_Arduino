@@ -1,4 +1,11 @@
 //slave_with_passcode
+/*
+
+Created by Romel Meza, Henrik Hynkemejer, Frederik Trier, Max Brazhnyy, Johanita Janse van Rensburg
+on 09/01/2024
+
+*/
+
 
 #include <Keypad.h>
 

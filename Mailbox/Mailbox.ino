@@ -1,6 +1,6 @@
 /*
 
-Created by Romel Meza, Henrik Hynkemejer, FLED_BUILTINerik Trier, Max Brazhnyy
+Created by Romel Meza, Henrik Hynkemejer, Frederik Trier, Max Brazhnyy, Johanita Janse van Rensburg
 on 09/01/2024
 
 */
@@ -238,7 +238,7 @@ void loop() {
     Blynk.virtualWrite(V0, counter);
     servo.write(0); // opening the lock
 
-    delay(5000);  // wait 5 seconds before closing the lock
+    delay(5000);  // wait 5 seconds before closing the lock; can be increased in real-world scenario to fit the needs of the user
 
     servo.write(180); // closing the lock
 
